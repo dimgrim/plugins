@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Neon Audio Plugins</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+        }
+        .plugins {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .plugin {
+            background-color: #333;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s;
+			width: 25%;
+        }
+        .plugin:hover {
+            transform: scale(1.05);
+        }
+        .plugin-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .download-button {
+            display: inline-block;
+            background-color: #ff5c5c;
+            color: #fff;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .download-button:hover {
+            background-color: #ff2c2c;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Neon Audio Plugins</h1>
+    </header>
+    <main>
+        <section class="plugins">
+            <article class="plugin">
+                <img src="stereo delay.png" alt="Neon Audio Stereo Delay" class="plugin-image">
+                <h2>Neon Audio Stereo Delay</h2>
+                <a href="Stereo Delay.exe" class="download-button">Download EXE</a>
+                <a href="Stereo Delay.vst3" class="download-button">Download VST3</a>
+            </article>
+            <article class="plugin">
+                <img src="subsynth.png" alt="Neon Audio Subsynth" class="plugin-image">
+                <h2>Neon Audio Subsynth</h2>
+                <a href="Subsynth.exe" class="download-button">Download EXE</a>
+                <a href="Subsynth.vst3" class="download-button">Download VST3</a>
+            </article>
+            <article class="plugin">
+                <img src="EQ.png" alt="Neon Audio EQ" class="plugin-image">
+                <h2>Neon Audio EQ</h2>
+                <a href="EQ.exe" class="download-button">Download EXE</a>
+                <a href="EQ.vst3" class="download-button">Download VST3</a>
+            </article>
+            <article class="plugin">
+                <img src="compressor.png" alt="Neon Audio Compressor" class="plugin-image">
+                <h2>Neon Audio Compressor</h2>
+                <a href="Neon Audio Compressor.exe" class="download-button">Download EXE</a>
+                <a href="Neon Audio Compressor.vst3" class="download-button">Download VST3</a>
+            </article>
+			<article class="plugin">
+                <img src="simple sample.png" alt="Neon Audio Simple Sample" class="plugin-image">
+                <h2>Neon Audio Simple Sample</h2>
+                <a href="Neon Audio Simple Sample.exe" class="download-button">Download EXE</a>
+                <a href="Neon Audio Simple Sample.vst3" class="download-button">Download VST3</a>
+				<a href="https://www.dropbox.com/scl/fi/euyq4f9rttiwh9u1m3woi/Samples.zip?rlkey=uvhh7gpfpsb5979ap1c9wah9g&st=hlyyhi3f&dl=1" class="download-button">Download Samples (you'll need these)</a>
+
+            </article>
+        </section>
+    </main>
+</body>
+</html>
