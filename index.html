@@ -260,7 +260,7 @@
             },
             linux: {
                 exe: "Neon Audio Stereo Delay",     
-                vst3: "Neon Audio Stereo Delay.so" 
+                vst3: "Neon Audio Stereo Delay.vst3" 
             }
         },
         {
@@ -272,7 +272,7 @@
             },
             linux: {
                 exe: "Neon Audio Subsynth",
-                vst3: "Neon Audio Subsynth.so"
+                vst3: "Neon Audio Subsynth.vst3"
             }
         },
         {
@@ -284,7 +284,7 @@
             },
             linux: {
                 exe: "Neon Audio Stereo Biquads",
-                vst3: "Neon Audio Stereo Biquads.so"
+                vst3: "Neon Audio Stereo Biquads.vst3"
             }
         },
         {
@@ -296,7 +296,7 @@
             },
             linux: {
                 exe: "Neon Audio Compressor",
-                vst3: "Neon Audio Compressor.so"
+                vst3: "Neon Audio Compressor.vst3"
             }
         },
         {
@@ -308,7 +308,7 @@
             },
             linux: {
                 exe: "Neon Audio Simple Sample",
-                vst3: "Neon Audio Simple Sample.so"
+                vst3: "Neon Audio Simple Sample.vst3"
             },
             samplePackUrl: "https://www.dropbox.com/scl/fi/euyq4f9rttiwh9u1m3woi/Samples.zip?rlkey=uvhh7gpfpsb5979ap1c9wah9g&st=hlyyhi3f&dl=1"
         }
@@ -353,7 +353,7 @@
                 exeBtn.textContent = exeLabel;
                 exeBtn.href = platformData.exe;
                 exeBtn.setAttribute("download", "");
-                exeBtn.setAttribute("aria-label", `Download ${plugin.name} ${isWindows ? 'Windows EXE' : 'Linux SO'}`);
+                exeBtn.setAttribute("aria-label", `Download ${plugin.name} ${isWindows ? 'Windows Standalone' : 'Linux Standalone'}`);
                 downloadGroup.appendChild(exeBtn);
             }
             
@@ -391,7 +391,7 @@
                 article.appendChild(downloadGroup);
                 const hintSpan = document.createElement("div");
                 hintSpan.className = "format-hint";
-                hintSpan.innerHTML = isWindows ? "🎛️ Windows VST3 + .exe" : "🐧 Linux VST3 + executable (SO)";
+                hintSpan.innerHTML = isWindows ? "🎛️ Windows VST3 + .exe" : "🐧 Linux VST3 + executable";
                 article.appendChild(hintSpan);
             }
 
@@ -437,7 +437,7 @@
                 const vstLink = document.createElement("a");
                 vstLink.className = "download-button";
                 if (!isWindows) vstLink.classList.add("linux-badge");
-                vstLink.textContent = isWindows ? "VST3 Plugin" : "SO plugin";
+                vstLink.textContent = isWindows ? "VST3 Plugin" : "VST3 Plugin";
                 vstLink.href = platformSpecific.vst3;
                 vstLink.setAttribute("download", "");
                 groupDiv.appendChild(vstLink);
