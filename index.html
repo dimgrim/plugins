@@ -87,6 +87,7 @@
             background: #4a4a4a;
         }
 
+        /* Linux default active style (red) */
         .platform-option.active {
             background: #ff5c5c;
             border-color: #ff9f9f;
@@ -96,18 +97,15 @@
             color: white;
         }
 
-        .platform-option:first-child.active {
-            background: #ff5c5c;
-            border-color: #ff9f9f;
-        }
-
-        .platform-option:last-child.active {
+        /* Windows secondary active style (blue) */
+        .platform-option[data-platform="windows"].active {
             background: #1e6dc7;
             border-color: #5d9eff;
         }
 
-        .platform-option.active {
+        .platform-option[data-platform="linux"].active {
             background: #ff5c5c;
+            border-color: #ff9f9f;
         }
 
         .plugins {
@@ -160,9 +158,9 @@
             margin: 12px 0 8px 0;
         }
 
+        /* Base button style - will be overridden by platform-specific colors */
         .download-button {
             display: inline-block;
-            background-color: #ff5c5c;
             color: #fff;
             padding: 10px 16px;
             text-decoration: none;
@@ -177,16 +175,20 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        .download-button:hover {
+        /* Linux button color (red) */
+        .download-button.linux-btn {
+            background-color: #ff5c5c;
+        }
+        .download-button.linux-btn:hover {
             background-color: #ff2c2c;
         }
 
-        .linux-badge {
-            background-color: #3a6ea5;
+        /* Windows button color (blue) */
+        .download-button.windows-btn {
+            background-color: #1e6dc7;
         }
-
-        .linux-badge:hover {
-            background-color: #2c5a8c;
+        .download-button.windows-btn:hover {
+            background-color: #0e5ab0;
         }
 
         .sample-link {
@@ -220,8 +222,8 @@
             padding-top: 24px;
         }
         .platform-option input[type="radio"] {
-    display: none;
-}
+            display: none;
+        }
 
         @media (max-width: 760px) {
             .plugin {
@@ -248,17 +250,17 @@
 
 <header>
     <h1>✨ Neon Audio Plugins ✨</h1>
-    <p style="margin-top: 8px; opacity: 0.8;">Professional-grade audio tools for Windows & Linux</p>
+    <p style="margin-top: 8px; opacity: 0.8;">Professional-grade audio tools for Linux & Windows</p>
 </header>
 
 <div class="platform-bar" id="platformSelector">
-    <div class="platform-option" data-platform="windows">
-        <input type="radio" name="platform" id="platformWin" value="windows" checked>
-        <label for="platformWin">🪟 Windows</label>
-    </div>
     <div class="platform-option" data-platform="linux">
-        <input type="radio" name="platform" id="platformLinux" value="linux">
+        <input type="radio" name="platform" id="platformLinux" value="linux" checked>
         <label for="platformLinux">🐧 Linux</label>
+    </div>
+    <div class="platform-option" data-platform="windows">
+        <input type="radio" name="platform" id="platformWin" value="windows">
+        <label for="platformWin">🪟 Windows</label>
     </div>
 </div>
 
@@ -332,94 +334,29 @@
                 vst3: "Neon Audio Simple Sample.vst3.zip"
             },
             samplePackUrl: "https://www.dropbox.com/scl/fi/fkhklhb7ewiu8z7gr1fij/Samples.zip?rlkey=503b32cp49a53cq5b0lgbwzcn&st=b6moioxr&dl=1"
+        },
+        // NEW PLUGIN: Neon Audio Reverb - available only for Linux (not for Windows)
+        {
+            name: "Neon Audio Reverb",
+            img: "reverb.png",
+            windows: {
+                exe: null,
+                vst3: null
+            },
+            linux: {
+                exe: "Neon Audio Reverb",
+                vst3: "Neon Audio Reverb.vst3.zip"
+            }
         }
     ];
 
-    let currentPlatform = "windows"; 
+    let currentPlatform = "linux";   // Changed default to Linux
 
     const container = document.getElementById("pluginsContainer");
     const radioWin = document.getElementById("platformWin");
     const radioLinux = document.getElementById("platformLinux");
     const platformOptions = document.querySelectorAll(".platform-option");
 
-    function renderPlugins() {
-        if (!container) return;
-        container.innerHTML = "";
-        
-        for (let plugin of pluginsData) {
-            const article = document.createElement("article");
-            article.className = "plugin";
-            
-            const img = document.createElement("img");
-            img.src = plugin.img;
-            img.alt = plugin.name;
-            img.className = "plugin-image";
-            img.loading = "lazy";
-            img.onerror = function() { this.style.opacity = "0.6"; this.style.background = "#222"; };
-            
-            const title = document.createElement("h2");
-            title.textContent = plugin.name;
-            
-            const downloadGroup = document.createElement("div");
-            downloadGroup.className = "download-group";
-            
-            const isWindows = (currentPlatform === "windows");
-            const platformData = isWindows ? plugin.windows : plugin.linux;
-            
-            if (platformData.exe) {
-                const exeBtn = document.createElement("a");
-                exeBtn.className = "download-button";
-                if (!isWindows) exeBtn.classList.add("linux-badge");
-                const exeLabel = isWindows ? "Download EXE" : "Download Linux Executable";
-                exeBtn.textContent = exeLabel;
-                exeBtn.href = platformData.exe;
-                exeBtn.setAttribute("download", "");
-                exeBtn.setAttribute("aria-label", `Download ${plugin.name} ${isWindows ? 'Windows Standalone' : 'Linux Standalone'}`);
-                downloadGroup.appendChild(exeBtn);
-            }
-            
-            if (platformData.vst3) {
-                const vstBtn = document.createElement("a");
-                vstBtn.className = "download-button";
-                if (!isWindows) vstBtn.classList.add("linux-badge");
-                vstBtn.textContent = isWindows ? "Download VST3" : "Download Linux VST3";
-                vstBtn.href = platformData.vst3;
-                vstBtn.setAttribute("download", "");
-                downloadGroup.appendChild(vstBtn);
-            }
-            
-            if (plugin.samplePackUrl) {
-                const sampleBtn = document.createElement("a");
-                sampleBtn.className = "download-button sample-link";
-                sampleBtn.textContent = "📦 Download Samples (required)";
-                sampleBtn.href = plugin.samplePackUrl;
-                sampleBtn.setAttribute("download", "");
-                sampleBtn.style.marginTop = "8px";
-                const extraDiv = document.createElement("div");
-                extraDiv.style.marginTop = "8px";
-                extraDiv.appendChild(sampleBtn);
-                article.appendChild(downloadGroup);
-                article.appendChild(extraDiv);
-                const hintSpan = document.createElement("div");
-                hintSpan.className = "format-hint";
-                hintSpan.innerHTML = isWindows ? "🎛️ Windows VST3 & standalone" : "🐧 Linux VST3 + native executable";
-                article.appendChild(hintSpan);
-                article.insertBefore(img, article.firstChild);
-                article.insertBefore(title, img.nextSibling);
-            } else {
-                article.appendChild(img);
-                article.appendChild(title);
-                article.appendChild(downloadGroup);
-                const hintSpan = document.createElement("div");
-                hintSpan.className = "format-hint";
-                hintSpan.innerHTML = isWindows ? "🎛️ Windows VST3 + .exe" : "🐧 Linux VST3 + executable";
-                article.appendChild(hintSpan);
-            }
-
-            container.appendChild(article);
-        }
-    }
-    
     function buildPlugins() {
         if (!container) return;
         container.innerHTML = "";
@@ -444,21 +381,56 @@
             
             const platformSpecific = isWindows ? plugin.windows : plugin.linux;
             
-            if (platformSpecific.exe) {
+            // Special handling: If plugin has no downloads for current platform (like Reverb on Windows)
+            const hasAnyDownload = (platformSpecific && (platformSpecific.exe || platformSpecific.vst3));
+            
+            if (!hasAnyDownload && isWindows) {
+                // Windows but plugin not available (Reverb case)
+                const unavailableMsg = document.createElement("div");
+                unavailableMsg.className = "format-hint";
+                unavailableMsg.style.color = "#ffaaaa";
+                unavailableMsg.style.background = "#3a2a2a";
+                unavailableMsg.style.borderRadius = "30px";
+                unavailableMsg.style.padding = "10px 12px";
+                unavailableMsg.style.margin = "12px 0 0 0";
+                unavailableMsg.style.fontWeight = "bold";
+                unavailableMsg.textContent = "🚫 Windows version not available (Linux exclusive)";
+                article.appendChild(imgEl);
+                article.appendChild(titleEl);
+                article.appendChild(groupDiv);
+                article.appendChild(unavailableMsg);
+                container.appendChild(article);
+                return;
+            }
+            
+            // Create buttons with platform-specific colors
+            if (platformSpecific && platformSpecific.exe) {
                 const exeLink = document.createElement("a");
                 exeLink.className = "download-button";
-                if (!isWindows) exeLink.classList.add("linux-badge");
-                exeLink.textContent = isWindows ? "EXE (Standalone)" : "Linux Executable";
+                // Apply correct color class based on current platform
+                if (isWindows) {
+                    exeLink.classList.add("windows-btn");
+                    exeLink.textContent = "EXE (Standalone)";
+                } else {
+                    exeLink.classList.add("linux-btn");
+                    exeLink.textContent = "Linux Executable";
+                }
                 exeLink.href = platformSpecific.exe;
                 exeLink.setAttribute("download", "");
                 groupDiv.appendChild(exeLink);
             }
             
-            if (platformSpecific.vst3) {
+            if (platformSpecific && platformSpecific.vst3) {
                 const vstLink = document.createElement("a");
                 vstLink.className = "download-button";
-                if (!isWindows) vstLink.classList.add("linux-badge");
-                vstLink.textContent = isWindows ? "VST3 Plugin" : "VST3 Plugin";
+                // Apply correct color class based on current platform
+                if (isWindows) {
+                    vstLink.classList.add("windows-btn");
+                    vstLink.textContent = "VST3 Plugin";
+                } else {
+                    vstLink.classList.add("linux-btn");
+                    vstLink.textContent = "VST3 Plugin";
+                }
                 vstLink.href = platformSpecific.vst3;
                 vstLink.setAttribute("download", "");
                 groupDiv.appendChild(vstLink);
@@ -480,14 +452,26 @@
                 article.appendChild(sampleDiv);
             }
             
-            // const hintSpan = document.createElement("div");
-            // hintSpan.className = "format-hint";
-            // if (isWindows) {
-            //     hintSpan.innerHTML = "🪟 Windows: VST3 & standalone EXE included";
-            // } else {
-            //     hintSpan.innerHTML = "🐧 Linux: VST3 plugin + executable (chmod +x)";
-            // }
-            // article.appendChild(hintSpan);
+            // Optional hint for Linux-only plugin (add small note)
+            if (!isWindows && plugin.name === "Neon Audio Reverb") {
+                const exclusiveNote = document.createElement("div");
+                exclusiveNote.className = "format-hint";
+                exclusiveNote.style.backgroundColor = "#2a3a4a";
+                exclusiveNote.style.marginTop = "10px";
+                exclusiveNote.style.borderTop = "1px solid #5a7a9a";
+                exclusiveNote.innerHTML = "🎵 Premium reverb effect — Linux native only";
+                article.appendChild(exclusiveNote);
+            } else if (isWindows && plugin.name !== "Neon Audio Reverb") {
+                const hintSpan = document.createElement("div");
+                hintSpan.className = "format-hint";
+                hintSpan.innerHTML = "🪟 Windows: VST3 & standalone EXE included";
+                article.appendChild(hintSpan);
+            } else if (!isWindows && plugin.name !== "Neon Audio Reverb") {
+                const hintSpan = document.createElement("div");
+                hintSpan.className = "format-hint";
+                hintSpan.innerHTML = "🐧 Linux: VST3 plugin + executable (chmod +x)";
+                article.appendChild(hintSpan);
+            }
             
             container.appendChild(article);
         });
@@ -538,7 +522,7 @@
         });
     }
     
-    setPlatform("windows");
+    setPlatform("linux");   // Initialize with Linux as default
     initEventListeners();
     
 </script>
